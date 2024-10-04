@@ -1,0 +1,41 @@
+doctype html
+html
+  head
+    title LeitnerDecks
+    meta(charset="UTF-8")
+    meta(name="viewport" content="width=device-width, initial-scale=1.0")
+    link(rel="stylesheet" href="/css/main.css")
+    link(rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css")
+
+  body
+    header
+      a(href="/admin")
+        i(class="fas fa-cog")
+
+    main
+      .deck-container
+        .deck
+          h2 DECK 1
+          p.card-count 0 Flashcards
+          button(type="button" class="active") Practice Deck 1
+          p.time-remaining
+        .deck
+          h2 DECK 2
+          p.card-count 0 Flashcards
+          button(type="button" class="inactive" disabled) Practice Deck 2
+          p.time-remaining
+        .deck
+          h2 DECK 3
+          p.card-count 0 Flashcards
+          button(type="button" class="inactive" disabled) Practice Deck 3
+          p.time-remaining
+        .deck
+          h2 DECK 4
+          p.card-count 0 Flashcards
+          button(type="button" class="inactive" disabled) Practice Deck 4
+          p.time-remaining
+        .deck
+          h2 DECK 5
+          p.card-count 0 Flashcards
+          button(type="button" class="inactive" disabled) Practice Deck 5
+          p.time-remaining
