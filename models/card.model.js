@@ -5,7 +5,7 @@ const cardSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  type: {
+  word_type: {
     type: String,
     required: true,
   },
@@ -16,7 +16,7 @@ const cardSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  deck: {
+  deckNo: {
     type: Number,
     required: true,
     default: 1,

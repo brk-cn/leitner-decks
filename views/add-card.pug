@@ -1,0 +1,20 @@
+doctype html
+html
+  head
+    title Add New Card
+    meta(charset="UTF-8")
+    meta(name="viewport" content="width=device-width, initial-scale=1.0")
+    link(rel="stylesheet" href="/css/main.css")
+    link(rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css")
+  body
+    header#left
+      a(href="/cards")
+        i(class="fa-solid fa-arrow-left")
+    main
+      h1#new-card add a new card
+      form(action="/cards" method="POST")
+        input(type="text" name="word" id="word" placeholder="word" required)
+        input(type="text" name="word_type" id="word_type" placeholder="word type" required)
+        input(type="text" name="context" id="context" placeholder="context" required)
+        textarea(name="translation" id="translation" rows='5' placeholder="translation" required)
+        button(type="submit") add
