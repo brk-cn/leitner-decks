@@ -1,6 +1,7 @@
 import express from "express";
 import mongoose from "mongoose";
 import path from "path";
+import { createDecks } from "./controllers/deck.controller.js";
 
 const port = process.env.PORT || 5000;
 const app = express();
@@ -14,6 +15,8 @@ mongoose
   .connect(process.env.MONGODB_URI)
   .then(() => console.log("MongoDB ++"))
   .catch((err) => console.error("MongoDB --", err));
+
+createDecks("2024-10-10");
 
 app.get("/", (req, res) => {
   res.render("index");
