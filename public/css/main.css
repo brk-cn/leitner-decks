@@ -26,28 +26,28 @@ body {
   font-style: normal;
 }
 
-header {
+header#index {
   position: absolute;
   top: 0;
-  left: 0;
+  right: 0;
   width: 0;
   height: 0;
-  border-right: 8rem solid transparent;
+  border-left: 8rem solid transparent;
   border-top: 8rem solid var(--main);
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-header i {
+header#index i {
   position: absolute;
   top: -6.75rem;
-  left: 1.05rem;
+  right: 0.5rem;
   color: var(--darkest);
-  font-size: 3rem;
+  font-size: 2.5rem;
 }
 
-header i:hover {
+header#index i:hover {
   scale: 1.15;
 }
 

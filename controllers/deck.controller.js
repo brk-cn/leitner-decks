@@ -3,7 +3,6 @@ import Deck from "../models/deck.model.js";
 
 export const createDecks = async (startDate) => {
   const utcStart = moment.utc(startDate).startOf("day");
-  console.log(utcStart);
 
   const decks = [
     { deckId: 1, reviewInterval: 1 },
