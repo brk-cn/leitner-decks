@@ -11,8 +11,8 @@ html
       a(href="/cards")
         i(class="fa-solid fa-arrow-left")
     main
-      h1#new-card add a new card
-      form(action="/cards" method="POST")
+      h1#card-form-title add a new card
+      form(method="POST" action="/cards")
         input(type="text" name="word" id="word" placeholder="word" required)
         input(type="text" name="word_type" id="word_type" placeholder="word type" required)
         input(type="text" name="context" id="context" placeholder="context" required)

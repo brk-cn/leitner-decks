@@ -152,17 +152,17 @@ button[disabled] {
   cursor: not-allowed;
 }
 
-h1#new-card {
+h1#card-form-title {
   color: var(--light);
   letter-spacing: 0.05rem;
   margin-top: 10%;
 }
 
-form {
+main > form {
   width: 33%;
 }
 
-form input {
+main > form input {
   width: 100%;
   height: 2rem;
   padding-left: 0.25rem;
@@ -176,17 +176,17 @@ form input {
   font-size: 1.1rem;
 }
 
-form input::placeholder,
-form textarea::placeholder {
+main > form input::placeholder,
+main > form textarea::placeholder {
   color: var(--dark);
   opacity: 0.5;
 }
 
-form input:active {
+main > form input:active {
   border: none;
 }
 
-form textarea {
+main > form textarea {
   width: 100%;
   padding-left: 0.25rem;
   margin-top: 0.5rem;
@@ -199,9 +199,9 @@ form textarea {
   font-size: 1.1rem;
 }
 
-form button {
+main > form button {
   display: block;
-  width: 5rem;
+  width: 7rem;
   height: 2.5rem;
   margin: 0.5rem auto;
   border: none;
@@ -216,11 +216,11 @@ form button {
   font-style: normal;
 }
 
-form button:hover {
+main > form button:hover {
   scale: 1.1;
 }
 
-form button:active {
+main > form button:active {
   scale: 0.95;
 }
 
@@ -237,7 +237,7 @@ table th {
 }
 
 th:nth-child(1) {
-  width: 20%;
+  width: 15%;
 }
 th:nth-child(2) {
   width: 15%;
@@ -252,7 +252,10 @@ th:nth-child(5) {
   width: 10%;
 }
 th:nth-child(6) {
-  width: 15%;
+  width: 10%;
+}
+th:nth-child(7) {
+  width: 10%;
 }
 
 table tr {
@@ -260,12 +263,16 @@ table tr {
   text-align: center;
 }
 
-td:nth-child(6) a {
-  padding: 0.25rem;
+td form button {
+  font-size: 1rem;
+  width: 100%;
+  display: inline;
+  border: none;
+  background: none;
   text-decoration: none;
   color: var(--light);
 }
 
-td:nth-child(6) a:hover {
+td form button:hover {
   text-decoration: underline;
 }

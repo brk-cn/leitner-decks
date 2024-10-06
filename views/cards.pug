@@ -23,7 +23,8 @@ html
             th context
             th translation
             th deck no
-            th actions
+            th
+            th
         tbody
           each card in cards
             tr
@@ -33,5 +34,8 @@ html
               td= card.translation
               td= card.deckNo
               td
-                a(href=`/cards/edit/${card._id}`) edit
-                a(href=`/cards/delete/${card._id}`) delete
+                form(method="GET", action=`/cards/edit/${card._id}`)
+                  button(type="submit") edit
+              td
+                form(method="POST", action=`/cards/delete/${card._id}`)
+                  button(type="submit") delete

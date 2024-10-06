@@ -19,8 +19,8 @@ router.get("/", async (req, res) => {
 
     res.render("index", { decks, deckCardCount });
   } catch (error) {
-    console.error("Error fetching decks and cards:", error);
-    res.status(500).send("Error fetching decks and cards");
+    console.err(err);
+    res.status(500).send("An error occurred while fetching the decks and cards");
   }
 });
 
@@ -54,6 +54,43 @@ router.post("/cards", async (req, res) => {
   } catch (err) {
     console.error(err);
     res.status(500).send("An error occurred while adding the card");
+  }
+});
+
+router.get("/cards/edit/:id", async (req, res) => {
+  try {
+    const card = await Card.findById(req.params.id);
+    if (!card) {
+      return res.status(404).send("Card not found");
+    }
+    res.render("edit-card", { card });
+  } catch (err) {
+    res.status(500).send("An error occurred while fetching the card");
+  }
+});
+
+router.post("/cards/edit/:id", async (req, res) => {
+  const { word, word_type, context, translation } = req.body;
+  try {
+    await Card.findByIdAndUpdate(req.params.id, {
+      word,
+      word_type,
+      context,
+      translation,
+    });
+    res.redirect("/cards");
+  } catch (err) {
+    res.status(500).send("An error occurred while updating the card");
+  }
+});
+
+router.post("/cards/delete/:id", async (req, res) => {
+  try {
+    const cardId = req.params.id;
+    await Card.findByIdAndDelete(cardId);
+    res.redirect("/cards");
+  } catch (err) {
+    res.status(500).send("An error occurred while deleting the card");
   }
 });
 
