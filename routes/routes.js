@@ -1,3 +1,4 @@
+import moment from "moment";
 import express from "express";
 import Card from "../models/card.model.js";
 import Deck from "../models/deck.model.js";
@@ -8,18 +9,24 @@ router.get("/", async (req, res) => {
   try {
     const decks = await Deck.find();
     const cards = await Card.find();
+    const now = moment();
 
-    const deckCardCount = decks.map((deck) => {
+    const decksData = decks.map((deck) => {
       const count = cards.filter((card) => card.deckNo === deck.deckId).length;
+      let remainingHours = null;
+      if (deck.nextReviewDate) {
+        remainingHours = moment(deck.nextReviewDate).diff(now, "hours");
+      }
+
       return {
         deckId: deck.deckId,
         count: count,
+        remainingHours: remainingHours,
       };
     });
-
-    res.render("index", { decks, deckCardCount });
-  } catch (error) {
-    console.err(err);
+    res.render("index", { decksData });
+  } catch (err) {
+    console.error(err);
     res.status(500).send("An error occurred while fetching the decks and cards");
   }
 });

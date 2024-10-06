@@ -3,6 +3,8 @@ html
   head
     title Edit Card
     link(rel="stylesheet" href="/css/main.css")
+    link(rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css")
+
   body
     header#left
       a(href="/cards")
@@ -11,7 +13,7 @@ html
       h1#card-form-title edit card
       form(method="POST" action=`/cards/edit/${card._id}`)
         input(type="text" name="word" id="word" value=card.word required)
-        input(type="text" name="word_type" id="word_type" value=card.type required)
+        input(type="text" name="word_type" id="word_type" value=card.word_type required)
         input(type="text" name="context" id="context" value=card.context)
         textarea(name="translation" id="translation" rows='5' required)=card.translation
         button(type="submit") update

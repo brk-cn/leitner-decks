@@ -90,7 +90,7 @@ header#left i:hover {
 }
 
 .deck-container {
-  margin: auto;
+  margin-top: 13.5%;
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   gap: 3rem;
@@ -103,6 +103,10 @@ header#left i:hover {
   padding-top: 1rem;
   border-radius: 0.25rem;
   background-color: var(--main);
+}
+
+.deck:hover {
+  scale: 1.01;
 }
 
 .deck h2 {
