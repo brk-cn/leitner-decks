@@ -1,8 +1,10 @@
 import express from "express";
 import mongoose from "mongoose";
 import path from "path";
+import cardRoutes from "./routes/card.routes.js";
+import deckRoutes from "./routes/deck.routes.js";
+import indexRoutes from "./routes/index.routes.js";
 import { createDecks } from "./controllers/deck.controller.js";
-import routes from "./routes/routes.js";
 
 const port = process.env.PORT || 5000;
 const app = express();
@@ -19,7 +21,9 @@ mongoose
 
 // createDecks("2024-10-8");
 
-app.use("/", routes);
+app.use("/", indexRoutes);
+app.use("/", cardRoutes);
+app.use("/", deckRoutes);
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);

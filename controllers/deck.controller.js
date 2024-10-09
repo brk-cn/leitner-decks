@@ -29,3 +29,41 @@ export const createDecks = async (startDate) => {
     }
   }
 };
+
+export const getDeckById = async (req, res) => {
+  try {
+    const deckNo = req.params.id;
+    const cards = await Card.find({ deckNo: deckNo });
+    const deck = await Deck.findOne({ deckNo: deckNo });
+
+    if (!cards.length) {
+      return res.status(404).send("No cards found for this deck.");
+    }
+
+    res.render("deck", { deckId: deck._id, deckNo, cards });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("An error occurred while fetching the deck");
+  }
+};
+
+export const updateDeck = async (req, res) => {
+  try {
+    const deckId = req.params.id;
+    const deck = await Deck.findById(deckId);
+
+    if (!deck) {
+      return res.status(404).json({ message: "Deck not found" });
+    }
+
+    nextReview = moment().endOf("day").add(deck.interval, "days");
+    deck.nextReviewDate = nextReview.toDate();
+
+    await deck.save();
+
+    res.json({ message: "Next review date updated", nextReviewDate: deck.nextReviewDate });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("An error occurred while updating next review date");
+  }
+};
