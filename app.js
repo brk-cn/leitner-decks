@@ -17,7 +17,7 @@ mongoose
   .then(() => console.log("MongoDB ++"))
   .catch((err) => console.error("MongoDB --", err));
 
-// createDecks("2024-10-6");
+// createDecks("2024-10-8");
 
 app.use("/", routes);
 

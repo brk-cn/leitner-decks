@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 const deckSchema = new mongoose.Schema({
-  deckId: {
+  deckNo: {
     type: Number,
     required: true,
     unique: true,

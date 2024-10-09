@@ -15,14 +15,17 @@ html
       .deck-container
         each deck in decksData
           .deck
-            h2 DECK #{deck.deckId}
-            p.card-count #{deck.count} Cards
+            h2 DECK #{deck.deckNo}
+            p.card-count #{deck.cardCount} Cards
             if deck.remainingHours > 0
-              button(type="button" class="inactive" disabled) Practice Deck #{deck.deckId}
+              button(type="button" class="inactive" disabled) Practice Deck #{deck.deckNo}
             else
-              button(type="button" class="active") Practice Deck #{deck.deckId}
+              a(href=`/decks/${deck.deckNo}`)
+                button(type="button" class="active") Practice Deck #{deck.deckNo}
             p.time-remaining
               if deck.remainingHours >= 24
-                | Deck #{deck.deckId} will be active in #{Math.floor(deck.remainingHours / 24)} days
+                | Deck #{deck.deckNo} will be active in #{Math.floor(deck.remainingHours / 24)} days
+              else if deck.remainingHours > 0
+                | Deck #{deck.deckNo} will be active in #{deck.remainingHours} hours
               else
-                | Deck #{deck.deckId} will be active in #{deck.remainingHours} hours
+                |

@@ -2,30 +2,30 @@ import moment from "moment";
 import Deck from "../models/deck.model.js";
 
 export const createDecks = async (startDate) => {
-  const utcStart = moment.utc(startDate).startOf("day");
+  const start = moment(startDate).startOf("day");
 
   const decks = [
-    { deckId: 1, reviewInterval: 1 },
-    { deckId: 2, reviewInterval: 2 },
-    { deckId: 3, reviewInterval: 5 },
-    { deckId: 4, reviewInterval: 8 },
-    { deckId: 5, reviewInterval: 14 },
+    { deckNo: 1, reviewInterval: 1 },
+    { deckNo: 2, reviewInterval: 2 },
+    { deckNo: 3, reviewInterval: 5 },
+    { deckNo: 4, reviewInterval: 8 },
+    { deckNo: 5, reviewInterval: 14 },
   ];
 
   for (const deck of decks) {
-    const nextReviewDate = utcStart.clone().add(deck.reviewInterval, "days").toDate();
+    const nextReviewDate = start.clone().add(deck.reviewInterval, "days").toDate();
 
     const newDeck = new Deck({
-      deckId: deck.deckId,
+      deckNo: deck.deckNo,
       reviewInterval: deck.reviewInterval,
       nextReviewDate,
     });
 
     try {
       await newDeck.save();
-      console.log(`Deck ${deck.deckId} ++`);
+      console.log(`Deck ${deck.deckNo} ++`);
     } catch (err) {
-      console.error(`Deck ${deck.deckId} --`, err);
+      console.error(`Deck ${deck.deckNo} --`, err);
     }
   }
 };

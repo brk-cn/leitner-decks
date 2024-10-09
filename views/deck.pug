@@ -1,0 +1,141 @@
+doctype html
+html
+  head
+    title Deck #{deckNo}
+    meta(charset="UTF-8")
+    meta(name="viewport" content="width=device-width, initial-scale=1.0")
+    link(rel="stylesheet" href="/css/main.css")
+
+  body
+    main
+      button(id="next-card" style="display:none") Next Card
+      .card-container
+        .card
+          p#word #{cards[0].word}
+          p#word_type (#{cards[0].word_type})
+          p#context context: #{cards[0].context}
+          p#translation(style="display:none") #{cards[0].translation}
+          p#placeholder ?
+        form(method="POST" id="guess-form" data-translation="#{cards[0].translation}")
+          input(type="text" id="user-guess" placeholder="your guess")
+          button(type="submit") submit
+              
+script.
+    const cards = !{JSON.stringify(cards)};
+    let cardIndex = 0;
+
+    const userInput = document.getElementById("user-guess");
+    const nextCardBtn = document.getElementById("next-card");
+    const guessForm = document.getElementById("guess-form");
+    const submitButton = document.querySelector("button[type='submit']");
+
+    function showCard() {
+      const card = cards[cardIndex];
+      document.getElementById("word").textContent = card.word;
+      document.getElementById("word_type").textContent = `(${card.word_type})`;
+      document.getElementById("context").textContent = `context: ${card.context}`;
+      document.getElementById("translation").textContent = card.translation;
+
+      userInput.value = "";
+      userInput.style.backgroundColor = "";
+      nextCardBtn.style.display = "none";
+    };
+
+    function updateDeckNo(cardId, isCorrect) {
+      fetch("/cards/update-deckno", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ cardId, isCorrect })
+      })
+      .then(response => response.json())
+      .then(data => {
+        console.log(data.message);
+      })
+      .catch(err => {
+        console.error(err);
+      });
+    }
+
+    function updateNextReview() {
+      const deckId = "#{deckId}";
+      fetch(`/decks/${deckId}/update-nextreview`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("Next review date updated:", data.nextReview);
+      })
+      .catch((err) => {
+        console.error("An error occured while updating next review date:", err);
+      });
+    }
+
+    guessForm.addEventListener("submit", function (event) {
+      event.preventDefault();
+
+      userInputVal = userInput.value.trim();
+      const translations = document
+        .getElementById("translation")
+        .textContent.split(",")
+        .map((t) => t.trim());
+
+      const currentCard = cards[cardIndex];
+      const isCorrect = translations.includes(userInputVal);
+
+      if (isCorrect) {
+        userInput.style.backgroundColor = "lightgreen";
+      } else {
+        userInput.style.backgroundColor = "lightcoral";
+      }
+
+      updateDeckNo(currentCard._id, isCorrect);
+
+      submitButton.disabled = true;
+      nextCardBtn.style.display = "block";
+    });
+
+    nextCardBtn.addEventListener("click", function () {
+      cardIndex++;
+      if (cardIndex < cards.length) {
+        showCard();
+        submitButton.disabled = false;
+      } else {
+        updateNextReview();
+
+        document.querySelector("main").innerHTML = "";
+
+        const div = document.createElement("div");
+        div.textContent = "There are no more cards to review in this deck. ";
+        div.style.color = "var(--light)";
+        div.style.fontSize = "1.5rem";
+        div.style.textAlign = "center";
+        div.style.marginTop = "15%";
+
+        const text = document.createElement("span");
+        text.textContent = "To return to the home page, ";
+        
+        const link = document.createElement("a");
+        link.textContent = "click here";
+        link.href = "/";
+        link.style.color = "var(--main)";
+        link.style.textDecoration = "none";
+
+        link.onmouseover = () => {
+          link.style.textDecoration = "underline";
+        };
+        link.onmouseout = () => {
+          link.style.textDecoration = "none";
+        };
+          
+        div.appendChild(text);
+        div.appendChild(link);
+        document.querySelector("main").appendChild(div);
+      }
+    });
+
+    showCard();
