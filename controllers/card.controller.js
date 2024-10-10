@@ -87,6 +87,7 @@ export const updateCard = async (req, res) => {
       card.deckNo += 1;
     } else {
       card.deckNo = Math.max(1, card.deckNo - 1);
+      card.reviewed = true;
     }
 
     await card.save();
@@ -94,5 +95,22 @@ export const updateCard = async (req, res) => {
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: "An error occurred while updating deckNo" });
+  }
+};
+
+export const getUnreviewedCardsByDeckNo = async (deckNo) => {
+  try {
+    let cards = await Card.find({ deckNo: deckNo, reviewed: false });
+
+    if (!cards.length) {
+      return null;
+    }
+
+    cards = cards.sort(() => Math.random() - 0.5);
+
+    return cards;
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("An error occurred while fetching the cards");
   }
 };

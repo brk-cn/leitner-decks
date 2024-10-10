@@ -12,17 +12,22 @@ router.get("/", async (req, res) => {
     const now = moment();
 
     const decksData = decks.map((deck) => {
-      const cardCount = cards.filter((card) => card.deckNo === deck.deckNo).length;
-      let remainingHours = null;
+      const deckCards = cards.filter((card) => card.deckNo === deck.deckNo);
+      const cardCount = deckCards.length;
+      const reviewedCardCount = deckCards.filter((card) => card.reviewed).length;
+
+      let remainingMins = null;
 
       if (deck.nextReviewDate) {
-        remainingHours = moment(deck.nextReviewDate).diff(now, "hours");
+        remainingMins = moment(deck.nextReviewDate).diff(now, "minutes");
       }
 
       return {
         deckNo: deck.deckNo,
         cardCount: cardCount,
-        remainingHours: remainingHours,
+        reviewedCardCount: reviewedCardCount,
+        remainingMins: remainingMins,
+        nextReviewDate: deck.nextReviewDate,
       };
     });
     res.render("index", { decksData });

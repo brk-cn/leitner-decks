@@ -18,8 +18,13 @@ const cardSchema = new mongoose.Schema({
   },
   deckNo: {
     type: Number,
-    required: true,
     default: 1,
+    required: true,
+  },
+  reviewed: {
+    type: Boolean,
+    default: false,
+    required: true,
   },
 });
 

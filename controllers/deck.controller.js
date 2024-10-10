@@ -1,8 +1,14 @@
 import moment from "moment";
 import Deck from "../models/deck.model.js";
+import { getUnreviewedCardsByDeckNo } from "./card.controller.js";
+import Card from "../models/card.model.js";
 
-export const createDecks = async (startDate) => {
-  const start = moment(startDate).startOf("day");
+export const createDecks = async () => {
+  const existingDecks = await Deck.find({});
+
+  if (existingDecks.length > 0) {
+    return;
+  }
 
   const decks = [
     { deckNo: 1, reviewInterval: 1 },
@@ -12,8 +18,9 @@ export const createDecks = async (startDate) => {
     { deckNo: 5, reviewInterval: 14 },
   ];
 
+  const now = moment();
   for (const deck of decks) {
-    const nextReviewDate = start.clone().add(deck.reviewInterval, "days").toDate();
+    const nextReviewDate = now.clone().add(deck.reviewInterval, "days").toDate();
 
     const newDeck = new Deck({
       deckNo: deck.deckNo,
@@ -30,15 +37,12 @@ export const createDecks = async (startDate) => {
   }
 };
 
-export const getDeckById = async (req, res) => {
+export const showDeckByNo = async (req, res) => {
   try {
-    const deckNo = req.params.id;
-    const cards = await Card.find({ deckNo: deckNo });
+    const deckNo = req.params.no;
     const deck = await Deck.findOne({ deckNo: deckNo });
 
-    if (!cards.length) {
-      return res.status(404).send("No cards found for this deck.");
-    }
+    const cards = await getUnreviewedCardsByDeckNo(deckNo);
 
     res.render("deck", { deckId: deck._id, deckNo, cards });
   } catch (err) {
@@ -50,15 +54,17 @@ export const getDeckById = async (req, res) => {
 export const updateDeck = async (req, res) => {
   try {
     const deckId = req.params.id;
-    const deck = await Deck.findById(deckId);
 
+    const deck = await Deck.findById(deckId);
     if (!deck) {
       return res.status(404).json({ message: "Deck not found" });
     }
 
-    nextReview = moment().endOf("day").add(deck.interval, "days");
-    deck.nextReviewDate = nextReview.toDate();
+    await Card.updateMany({ deckNo: deck.deckNo }, { reviewed: false });
 
+    const now = moment();
+    const nextReview = now.add(deck.reviewInterval, "days");
+    deck.nextReviewDate = nextReview.toDate();
     await deck.save();
 
     res.json({ message: "Next review date updated", nextReviewDate: deck.nextReviewDate });

@@ -6,6 +6,7 @@ html
     meta(name="viewport" content="width=device-width, initial-scale=1.0")
     link(rel="stylesheet" href="/css/main.css")
     link(rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css")
+    script(src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.30.1/moment.min.js")
 
   body
     header#right
@@ -16,16 +17,31 @@ html
         each deck in decksData
           .deck
             h2 DECK #{deck.deckNo}
-            p.card-count #{deck.cardCount} Cards
-            if deck.remainingHours > 0
+            p.card-count #{deck.reviewedCardCount}/#{deck.cardCount} cards reviewed
+            if deck.remainingMins > 0
               button(type="button" class="inactive" disabled) Practice Deck #{deck.deckNo}
             else
               a(href=`/decks/${deck.deckNo}`)
                 button(type="button" class="active") Practice Deck #{deck.deckNo}
             p.time-remaining
-              if deck.remainingHours >= 24
-                | Deck #{deck.deckNo} will be active in #{Math.floor(deck.remainingHours / 24)} days
-              else if deck.remainingHours > 0
-                | Deck #{deck.deckNo} will be active in #{deck.remainingHours} hours
+              if Math.floor(deck.remainingMins / 1440) > 0
+                | Deck #{deck.deckNo} will be active in #{Math.floor(deck.remainingMins / 1440)} days
+              else if Math.floor(deck.remainingMins / 60) >= 6
+                | Deck #{deck.deckNo} will be active in #{Math.floor(deck.remainingMins / 60)} hours
+              else if Math.floor(deck.remainingMins / 60) >= 1
+                | Deck #{deck.deckNo} will be active in #{Math.floor(deck.remainingMins / 60)} hours and #{deck.remainingMins % 60} mins
+              else if Math.floor(deck.remainingMins / 60) > 0
+                | Deck #{deck.deckNo} will be active in #{deck.remainingMins % 60} mins
               else
-                |
+                | 
+
+  script.
+    const now = moment();
+    const decksData = !{JSON.stringify(decksData)};
+    decksData.forEach(deck => {
+      const nextReviewDate = moment(deck.nextReviewDate);
+      const hoursDiff = now.diff(nextReviewDate, 'hours');
+      if (hoursDiff >= 24) {
+        console.error(`Deck ${deck.deckNo}`);
+      }
+    });
