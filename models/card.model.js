@@ -26,6 +26,10 @@ const cardSchema = new mongoose.Schema({
     default: false,
     required: true,
   },
+  deleted: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 const Card = mongoose.model("Card", cardSchema);

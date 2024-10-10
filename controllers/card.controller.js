@@ -1,9 +1,8 @@
-import moment from "moment";
 import Card from "../models/card.model.js";
 
 export const getCards = async (req, res) => {
   try {
-    const cards = await Card.find();
+    const cards = await Card.find({ deleted: false });
     res.render("cards", { cards });
   } catch (err) {
     console.error(err);
@@ -65,7 +64,8 @@ export const editCard = async (req, res) => {
 export const deleteCard = async (req, res) => {
   try {
     const cardId = req.params.id;
-    await Card.findByIdAndDelete(cardId);
+    // await Card.findByIdAndDelete(cardId);
+    await Card.findByIdAndUpdate(cardId, { deleted: true });
     res.redirect("/cards");
   } catch (err) {
     console.error(err);
@@ -78,11 +78,9 @@ export const updateCard = async (req, res) => {
 
   try {
     const card = await Card.findById(cardId);
-
     if (!card) {
       return res.status(404).json({ message: "Card not found" });
     }
-
     if (isCorrect) {
       card.deckNo += 1;
     } else {
@@ -100,12 +98,10 @@ export const updateCard = async (req, res) => {
 
 export const getUnreviewedCardsByDeckNo = async (deckNo) => {
   try {
-    let cards = await Card.find({ deckNo: deckNo, reviewed: false });
-
+    let cards = await Card.find({ deckNo: deckNo, reviewed: false, deleted: false });
     if (!cards.length) {
       return null;
     }
-
     cards = cards.sort(() => Math.random() - 0.5);
 
     return cards;
