@@ -13,8 +13,7 @@ router.get("/", async (req, res) => {
 
     const decksData = decks.map((deck) => {
       const deckCards = cards.filter((card) => card.deckNo === deck.deckNo);
-      const cardCount = deckCards.length;
-      const reviewedCardCount = deckCards.filter((card) => card.reviewed).length;
+      const cardCount = deckCards.filter((card) => card.reviewed === false).length;
 
       let remainingMins = null;
 
@@ -23,9 +22,9 @@ router.get("/", async (req, res) => {
       }
 
       return {
+        _id: deck._id,
         deckNo: deck.deckNo,
         cardCount: cardCount,
-        reviewedCardCount: reviewedCardCount,
         remainingMins: remainingMins,
         nextReviewDate: deck.nextReviewDate,
       };

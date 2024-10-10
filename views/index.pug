@@ -17,31 +17,47 @@ html
         each deck in decksData
           .deck
             h2 DECK #{deck.deckNo}
-            p.card-count #{deck.reviewedCardCount}/#{deck.cardCount} cards reviewed
+            p.card-count #{deck.cardCount} cards
             if deck.remainingMins > 0
               button(type="button" class="inactive" disabled) Practice Deck #{deck.deckNo}
             else
               a(href=`/decks/${deck.deckNo}`)
                 button(type="button" class="active") Practice Deck #{deck.deckNo}
             p.time-remaining
-              if Math.floor(deck.remainingMins / 1440) > 0
-                | Deck #{deck.deckNo} will be active in #{Math.floor(deck.remainingMins / 1440)} days
-              else if Math.floor(deck.remainingMins / 60) >= 6
-                | Deck #{deck.deckNo} will be active in #{Math.floor(deck.remainingMins / 60)} hours
+              if Math.floor(deck.remainingMins / 1440) >= 1
+                - const remainingDays = Math.floor(deck.remainingMins / 1440);
+                - const remainingHours = Math.floor((deck.remainingMins % 1440) / 60);
+                | Deck #{deck.deckNo} will be active in #{remainingDays} days and #{remainingHours} hours
               else if Math.floor(deck.remainingMins / 60) >= 1
-                | Deck #{deck.deckNo} will be active in #{Math.floor(deck.remainingMins / 60)} hours and #{deck.remainingMins % 60} mins
-              else if Math.floor(deck.remainingMins / 60) > 0
-                | Deck #{deck.deckNo} will be active in #{deck.remainingMins % 60} mins
+                - const remainingHours = Math.floor(deck.remainingMins / 60);
+                - const remainingMinutes = deck.remainingMins % 60;
+                | Deck #{deck.deckNo} will be active in #{remainingHours} hours and #{remainingMinutes} mins
+              else if deck.remainingMins > 0
+                | Deck #{deck.deckNo} will be active in #{deck.remainingMins} mins
               else
-                | 
+                | Deck #{deck.deckNo} is now active
 
   script.
     const now = moment();
     const decksData = !{JSON.stringify(decksData)};
+
     decksData.forEach(deck => {
       const nextReviewDate = moment(deck.nextReviewDate);
       const hoursDiff = now.diff(nextReviewDate, 'hours');
+
       if (hoursDiff >= 24) {
-        console.error(`Deck ${deck.deckNo}`);
+        fetch(`/decks/${deck._id}/update`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          }
+        })
+        .then(response => response.json())
+        .then(data => {
+        console.log(data);
+        })
+        .catch(err => {
+          console.error(err);
+        });
       }
     });
