@@ -3,13 +3,13 @@ import * as cardController from "../controllers/card.controller.js";
 
 const router = express.Router();
 
-router.get("/cards", cardController.getCards);
-router.get("/cards/add", cardController.showAddCardPage);
-router.post("/cards/add", cardController.addNewCard);
-router.get("/cards/edit/:id", cardController.showEditCardPage);
-router.post("/cards/edit/:id", cardController.editCard);
-router.post("/cards/delete/:id", cardController.deleteCard);
-router.post("/cards/update/:id", cardController.updateCard);
-router.get("/cards/:deckno", cardController.getUnreviewedCardsByDeckNo);
+router.get("/", cardController.getCards);
+router.get("/add", cardController.showAddCardPage);
+router.post("/add", cardController.addNewCard);
+router.get("/edit/:id", cardController.showEditCardPage);
+router.post("/edit/:id", cardController.editCard);
+router.post("/delete/:id", cardController.deleteCard);
+router.post("/update/:id", cardController.updateCard);
+router.get("/:deckno", cardController.getUnreviewedCardsByDeckNo);
 
 export default router;

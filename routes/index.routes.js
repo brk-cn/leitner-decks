@@ -8,7 +8,7 @@ const router = express.Router();
 router.get("/", async (req, res) => {
   try {
     const decks = await Deck.find();
-    const cards = await Card.find();
+    const cards = await Card.find({ deleted: false });
     const now = moment();
 
     const decksData = decks.map((deck) => {
