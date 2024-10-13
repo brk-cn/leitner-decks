@@ -44,10 +44,9 @@ html
     decksData.forEach(deck => {
       const nextReviewDate = moment(deck.nextReviewDate);
       const hoursDiff = now.diff(nextReviewDate, 'hours');
-
       if (hoursDiff >= 24) {
         fetch(`/decks/${deck._id}/update`, {
-          method: 'PUT',
+          method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           }
