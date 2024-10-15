@@ -91,10 +91,9 @@ header#left i:hover {
 }
 
 .deck-container {
-  margin-top: 13.5%;
+  margin-top: 10rem;
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-  gap: 3rem;
   text-align: center;
 }
 
@@ -160,7 +159,7 @@ button[disabled] {
 h1#card-form-title {
   color: var(--light);
   letter-spacing: 0.05rem;
-  margin-top: 10%;
+  margin-top: 10rem;
 }
 
 main > form {
@@ -387,4 +386,108 @@ main > .card-container > form button:active {
 
 .hidden {
   visibility: hidden;
+}
+
+@media only screen and (max-width: 575px) {
+  .deck-container {
+    grid-template-columns: repeat(1, 1fr);
+    grid-row-gap: 3.5rem;
+  }
+  .deck {
+    width: 15rem;
+    height: 10rem;
+  }
+
+  main > form {
+    width: 47%;
+  }
+}
+
+@media only screen and (min-width: 576px) and (max-width: 991px) {
+  .deck-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    grid-column-gap: 2.5rem;
+    grid-row-gap: 3.5rem;
+  }
+
+  .deck:nth-child(1) {
+    grid-area: 1 / 1 / 2 / 2;
+  }
+  .deck:nth-child(2) {
+    grid-area: 1 / 2 / 2 / 3;
+  }
+  .deck:nth-child(3) {
+    grid-area: 2 / 1 / 3 / 2;
+  }
+  .deck:nth-child(4) {
+    grid-area: 2 / 2 / 3 / 3;
+  }
+  .deck:nth-child(5) {
+    grid-area: 3 / 1 / 4 / 3;
+    position: relative;
+    left: 8.75rem;
+  }
+
+  .deck {
+    width: 15rem;
+    height: 10rem;
+  }
+
+  main > form {
+    width: 39%;
+  }
+}
+
+@media only screen and (min-width: 992px) and (max-width: 1399px) {
+  .deck-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    grid-column-gap: 2.5rem;
+    grid-row-gap: 3.5rem;
+  }
+
+  .deck:nth-child(1) {
+    grid-area: 1 / 1 / 2 / 2;
+  }
+  .deck:nth-child(2) {
+    grid-area: 1 / 2 / 2 / 3;
+  }
+  .deck:nth-child(3) {
+    grid-area: 1 / 3 / 2 / 4;
+  }
+  .deck:nth-child(4) {
+    grid-area: 2 / 1 / 3 / 2;
+    position: relative;
+    left: 8.75rem;
+  }
+  .deck:nth-child(5) {
+    grid-area: 2 / 3 / 3 / 4;
+    position: relative;
+    right: 8.75rem;
+  }
+
+  .deck {
+    width: 15rem;
+    height: 10rem;
+  }
+
+  main > form {
+    width: 35%;
+  }
+}
+
+@media only screen and (min-width: 1400px) {
+  .deck-container {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-column-gap: 2.5rem;
+  }
+
+  .deck {
+    width: 15rem;
+    height: 10rem;
+  }
 }
