@@ -228,59 +228,6 @@ main > form button:active {
   scale: 0.95;
 }
 
-table {
-  width: 50%;
-  margin-top: 1%;
-  color: var(--main);
-}
-
-table th {
-  height: 2rem;
-  color: var(--light);
-  font-size: 1.25rem;
-}
-
-th:nth-child(1) {
-  width: 15%;
-}
-th:nth-child(2) {
-  width: 15%;
-}
-th:nth-child(3) {
-  width: 10%;
-}
-th:nth-child(4) {
-  width: 30%;
-}
-th:nth-child(5) {
-  width: 10%;
-}
-th:nth-child(6) {
-  width: 10%;
-}
-th:nth-child(7) {
-  width: 10%;
-}
-
-table tr {
-  height: 2rem;
-  text-align: center;
-}
-
-td form button {
-  font-size: 1rem;
-  width: 100%;
-  display: inline;
-  border: none;
-  background: none;
-  text-decoration: none;
-  color: var(--light);
-}
-
-td form button:hover {
-  text-decoration: underline;
-}
-
 .card-container {
   display: flex;
   flex-direction: column;
@@ -393,9 +340,14 @@ main > .card-container > form button:active {
     grid-template-columns: repeat(1, 1fr);
     grid-row-gap: 3.5rem;
   }
+
   .deck {
     width: 15rem;
     height: 10rem;
+  }
+
+  .deck:last-child {
+    margin-bottom: 3.5rem;
   }
 
   main > form {
@@ -490,4 +442,64 @@ main > .card-container > form button:active {
     width: 15rem;
     height: 10rem;
   }
+}
+
+#cards-div {
+  margin-top: 1.25rem;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  row-gap: 2.25rem;
+  column-gap: 0.01rem;
+}
+
+.card-div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 50%;
+}
+
+.card-header,
+.card-body,
+.card-footer {
+  text-align: center;
+  color: var(--light);
+}
+
+.card-header {
+  width: 150%;
+}
+
+.card-footer {
+  display: flex;
+}
+
+.word-span {
+  font-size: 1.25rem;
+  font-weight: bold;
+  color: var(--main);
+}
+
+.translation-span {
+  font-size: 1.25rem;
+}
+
+.card-footer button {
+  border: none;
+  background: none;
+  text-decoration: none;
+  font-size: 1.25rem;
+}
+
+.card-footer button:hover {
+  text-decoration: underline;
+}
+
+.btn-edit {
+  color: lightblue;
+}
+
+.btn-delete {
+  color: lightcoral;
 }

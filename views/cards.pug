@@ -15,27 +15,23 @@ html
       a(href="/cards/add")
         i(class="fa-solid fa-square-plus")
     main
-      table
-        thead
-          tr
-            th word
-            th word type
-            th context
-            th translation
-            th deck no
-            th
-            th
-        tbody
-          each card in cards
-            tr
-              td= card.word
-              td= card.word_type
-              td= card.context
-              td= card.translation
-              td= card.deckNo
-              td
-                form(method="GET", action=`/cards/edit/${card._id}`)
-                  button(type="submit") edit
-              td
-                form(method="POST", action=`/cards/delete/${card._id}`)
-                  button(type="submit") delete
+      #cards-div
+        each card in cards
+          .card-div
+            .card-header
+              span(class="deck-no-span") deck: #{card.deckNo} | 
+              span(class="word-span") #{card.word}
+            .card-body
+              .card-info
+                span(class="word-type-span") (#{card.word_type})
+                if card.context
+                  span(class="context-span") (context: #{card.context})
+              span(class="translation-span") #{card.translation}
+            .card-footer
+              form(method="GET", action=`/cards/edit/${card._id}`)
+                button(class="btn-edit" type="submit") edit
+              form(method="POST", action=`/cards/delete/${card._id}`)
+                button(class="btn-delete" type="submit") delete
+
+
+
