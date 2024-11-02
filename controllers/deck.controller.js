@@ -60,7 +60,16 @@ export const updateDeck = async (req, res) => {
       return res.status(404).json({ message: "Deck not found" });
     }
 
-    await Card.updateMany({ deckNo: deck.deckNo }, { reviewed: false });
+    if (req.body.updateType === "decreaseCardsDeckNo") {
+      const cards = await Card.find({ deckNo: deck.deckNo });
+      for (let card of cards) {
+        card.deckNo = Math.max(1, card.deckNo - 1);
+        card.reviewed = false;
+        await card.save();
+      }
+    } else {
+      await Card.updateMany({ deckNo: deck.deckNo }, { reviewed: false });
+    }
 
     const now = moment();
     const nextReview = now.add(deck.reviewInterval, "days");
