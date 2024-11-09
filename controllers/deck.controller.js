@@ -1,7 +1,7 @@
-import moment from "moment";
 import Deck from "../models/deck.model.js";
-import { getUnreviewedCardsByDeckNo } from "./card.controller.js";
 import Card from "../models/card.model.js";
+import { getUnreviewedCardsByDeckNo } from "./card.controller.js";
+import moment from "moment";
 
 export const createDecks = async () => {
   const existingDecks = await Deck.find({});
@@ -18,9 +18,8 @@ export const createDecks = async () => {
     { deckNo: 5, reviewInterval: 14 },
   ];
 
-  const now = moment();
   for (const deck of decks) {
-    const nextReviewDate = now.clone().add(deck.reviewInterval, "days").toDate();
+    const nextReviewDate = moment().startOf("day").clone().add(deck.reviewInterval, "days").toDate();
 
     const newDeck = new Deck({
       deckNo: deck.deckNo,
@@ -60,25 +59,33 @@ export const updateDeck = async (req, res) => {
       return res.status(404).json({ message: "Deck not found" });
     }
 
-    if (req.body.updateType === "decreaseCardsDeckNo") {
-      const cards = await Card.find({ deckNo: deck.deckNo });
-      for (let card of cards) {
-        card.deckNo = Math.max(1, card.deckNo - 1);
-        card.reviewed = false;
-        await card.save();
-      }
-    } else {
-      await Card.updateMany({ deckNo: deck.deckNo }, { reviewed: false });
-    }
-
-    const now = moment();
-    const nextReview = now.add(deck.reviewInterval, "days");
+    const nextReview = moment(deck.nextReviewDate).add(deck.reviewInterval, "days");
     deck.nextReviewDate = nextReview.toDate();
     await deck.save();
 
-    res.json({ message: "Next review date updated", nextReviewDate: deck.nextReviewDate });
+    res.json({ message: "Deck updated", nextReviewDate: deck.nextReviewDate });
   } catch (err) {
     console.error(err);
     res.status(500).send("An error occurred while updating next review date");
+  }
+};
+
+export const updateOverdueDecks = async (req, res) => {
+  try {
+    const decks = await Deck.find();
+
+    for (let deck of decks) {
+      if (moment(deck.nextReviewDate).isBefore(moment().startOf("day"))) {
+        await Card.updateMany({ deckNo: Math.max(1, deck.deckNo - 1) }, { reviewed: false });
+
+        const nextReview = moment(deck.nextReviewDate).add(deck.reviewInterval, "days");
+        deck.nextReviewDate = nextReview.toDate();
+        await deck.save();
+      }
+    }
+    res.status(200).send("Decks updated");
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("An error occured while updating decks");
   }
 };

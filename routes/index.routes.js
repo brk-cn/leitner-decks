@@ -9,7 +9,6 @@ router.get("/", async (req, res) => {
   try {
     const decks = await Deck.find();
     const cards = await Card.find({ deleted: false });
-    const now = moment();
 
     const decksData = decks.map((deck) => {
       const deckCards = cards.filter((card) => card.deckNo === deck.deckNo);
@@ -18,7 +17,7 @@ router.get("/", async (req, res) => {
       let remainingMins = null;
 
       if (deck.nextReviewDate) {
-        remainingMins = moment(deck.nextReviewDate).diff(now, "minutes");
+        remainingMins = moment(deck.nextReviewDate).diff(moment(), "minutes");
       }
 
       return {

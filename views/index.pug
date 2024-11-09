@@ -36,29 +36,3 @@ html
                 | Deck #{deck.deckNo} will be active in #{deck.remainingMins} mins
               else
                 | Deck #{deck.deckNo} is now active
-
-  script.
-    const now = moment();
-    const decksData = !{JSON.stringify(decksData)};
-
-    decksData.forEach(deck => {
-      const nextReviewDate = moment(deck.nextReviewDate);
-      const hoursDiff = now.diff(nextReviewDate, 'hours');
-      console.log(deck, hoursDiff)
-      if (hoursDiff >= 24) {
-        fetch(`/decks/${deck._id}/update`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ updateType: "decreaseCardsDeckNo" })
-        })
-        .then(response => response.json())
-        .then(data => {
-        console.log(data);
-        })
-        .catch(err => {
-          console.error(err);
-        });
-      }
-    });
