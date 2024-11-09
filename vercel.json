@@ -11,5 +11,11 @@
       "src": "/(.*)",
       "dest": "app.js"
     }
+  ],
+  "crons": [
+    {
+      "path": "/overdue-update",
+      "schedule": "0 0 * * *"
+    }
   ]
 }
