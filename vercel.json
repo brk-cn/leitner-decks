@@ -14,7 +14,7 @@
   ],
   "crons": [
     {
-      "path": "/overdue-update",
+      "path": "/decks/overdue-update",
       "schedule": "0 0 * * *"
     }
   ]
