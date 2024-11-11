@@ -76,7 +76,12 @@ export const updateOverdueDecks = async (req, res) => {
 
     for (let deck of decks) {
       if (moment(deck.nextReviewDate).isBefore(moment().startOf("day"))) {
-        await Card.updateMany({ deckNo: Math.max(1, deck.deckNo - 1) }, { reviewed: false });
+        const cards = await Card.find({ deckNo: deck.deckNo });
+        for (let card of cards) {
+          card.deckNo = Math.max(1, card.deckNo - 1);
+          card.reviewed = false;
+          await card.save();
+        }
 
         const nextReview = moment(deck.nextReviewDate).add(deck.reviewInterval, "days");
         deck.nextReviewDate = nextReview.toDate();
