@@ -47,6 +47,9 @@ html
         userInput.style.backgroundColor = "lightcoral";
       }
 
+      document.getElementById("translation").style.display = "block";
+      document.getElementById("placeholder").style.display = "none";
+
       updateCard(currentCard._id, isCorrect);
 
       submitButton.disabled = true;
@@ -76,6 +79,8 @@ html
         userInput.value = "";
         userInput.style.backgroundColor = "";
         nextCardBtn.style.display = "none";
+        document.getElementById("translation").style.display = "none";
+        document.getElementById("placeholder").style.display = "block";
       }
     }
 
